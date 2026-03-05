@@ -14,10 +14,11 @@ interface AttendanceData {
 interface AttendanceInputProps {
   subjects: Subject[];
   onNext: (data: AttendanceData) => void;
+  onBack?: () => void;
   initialData?: AttendanceData;
 }
 
-const AttendanceInput = ({ subjects, onNext, initialData }: AttendanceInputProps) => {
+const AttendanceInput = ({ subjects, onNext, onBack, initialData }: AttendanceInputProps) => {
   const [data, setData] = useState<AttendanceData>(
     initialData || Object.fromEntries(subjects.map((s) => [s.id, { total: 0, attended: 0 }]))
   );
@@ -117,12 +118,22 @@ const AttendanceInput = ({ subjects, onNext, initialData }: AttendanceInputProps
         })}
       </div>
 
-      <button
-        onClick={handleSubmit}
-        className="w-full mt-6 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-md hover:opacity-90 transition-opacity"
-      >
-        Calculate Impact <ArrowRight className="w-4 h-4" />
-      </button>
+      <div className="flex gap-3 mt-6">
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="flex items-center justify-center gap-2 bg-secondary text-foreground font-semibold py-3 px-6 rounded-md hover:bg-muted transition-colors"
+          >
+            <ArrowRight className="w-4 h-4 rotate-180" /> Back
+          </button>
+        )}
+        <button
+          onClick={handleSubmit}
+          className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-md hover:opacity-90 transition-opacity"
+        >
+          Calculate Impact <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
     </motion.div>
   );
 };

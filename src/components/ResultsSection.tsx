@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BarChart3, RotateCcw, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { BarChart3, RotateCcw, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
 
 interface Subject {
   id: string;
@@ -15,9 +15,10 @@ interface ResultsSectionProps {
   attendanceData: AttendanceData;
   leaveDays: number;
   onRecalculate: () => void;
+  onBack?: () => void;
 }
 
-const ResultsSection = ({ subjects, attendanceData, leaveDays, onRecalculate }: ResultsSectionProps) => {
+const ResultsSection = ({ subjects, attendanceData, leaveDays, onRecalculate, onBack }: ResultsSectionProps) => {
   const results = subjects.map((sub) => {
     const d = attendanceData[sub.id];
     const currentPct = (d.attended / d.total) * 100;
@@ -135,12 +136,22 @@ const ResultsSection = ({ subjects, attendanceData, leaveDays, onRecalculate }: 
         })}
       </div>
 
-      <button
-        onClick={onRecalculate}
-        className="w-full mt-6 flex items-center justify-center gap-2 bg-secondary text-foreground font-semibold py-3 rounded-md hover:bg-muted transition-colors"
-      >
-        <RotateCcw className="w-4 h-4" /> Recalculate
-      </button>
+      <div className="flex gap-3 mt-6">
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="flex-1 flex items-center justify-center gap-2 bg-secondary text-foreground font-semibold py-3 rounded-md hover:bg-muted transition-colors"
+          >
+            <ArrowRight className="w-4 h-4 rotate-180" /> Back
+          </button>
+        )}
+        <button
+          onClick={onRecalculate}
+          className="flex-1 flex items-center justify-center gap-2 bg-secondary text-foreground font-semibold py-3 rounded-md hover:bg-muted transition-colors"
+        >
+          <RotateCcw className="w-4 h-4" /> Recalculate
+        </button>
+      </div>
     </motion.div>
   );
 };

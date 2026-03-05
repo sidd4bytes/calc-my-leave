@@ -9,6 +9,7 @@ interface Subject {
 
 interface SubjectSelectionProps {
   onNext: (subjects: Subject[]) => void;
+  onBack?: () => void;
   initialSelected?: Subject[];
 }
 
@@ -21,7 +22,7 @@ const MOCK_SUBJECTS: Subject[] = [
   { id: "ME106", name: "Engineering Mechanics" },
 ];
 
-const SubjectSelection = ({ onNext, initialSelected }: SubjectSelectionProps) => {
+const SubjectSelection = ({ onNext, onBack, initialSelected }: SubjectSelectionProps) => {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
@@ -129,13 +130,23 @@ const SubjectSelection = ({ onNext, initialSelected }: SubjectSelectionProps) =>
               );
             })}
           </div>
-          <button
-            disabled={selected.size === 0}
-            onClick={() => onNext(subjects.filter((s) => selected.has(s.id)))}
-            className="w-full mt-6 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-md disabled:opacity-40 hover:opacity-90 transition-opacity"
-          >
-            Confirm Selection <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="flex gap-3 mt-6">
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="flex items-center justify-center gap-2 bg-secondary text-foreground font-semibold py-3 px-6 rounded-md hover:bg-muted transition-colors"
+              >
+                <ArrowRight className="w-4 h-4 rotate-180" /> Back
+              </button>
+            )}
+            <button
+              disabled={selected.size === 0}
+              onClick={() => onNext(subjects.filter((s) => selected.has(s.id)))}
+              className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-md disabled:opacity-40 hover:opacity-90 transition-opacity"
+            >
+              Confirm Selection <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </>
       )}
     </motion.div>
