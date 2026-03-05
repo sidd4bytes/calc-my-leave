@@ -58,6 +58,7 @@ const Index = () => {
                 setSelectedSubjects(subs);
                 setStep(3);
               }}
+              onBack={() => setStep(1)}
             />
           )}
           {step === 3 && (
@@ -69,6 +70,7 @@ const Index = () => {
                 setAttendanceData(data);
                 setStep(4);
               }}
+              onBack={() => setStep(2)}
             />
           )}
           {step === 4 && (
@@ -78,6 +80,7 @@ const Index = () => {
               attendanceData={attendanceData}
               leaveDays={leaveDays}
               onRecalculate={() => setStep(1)}
+              onBack={() => setStep(3)}
             />
           )}
         </AnimatePresence>
